@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocalStorage } from "../util/useLocalStorage";
 import { ajax } from "../Services/fetchService";
+import { Form, Col, Row, Button, Container, Badge } from "react-bootstrap";
 
 const AssignmentView = () => {
   const [jwt, setJwt] = useLocalStorage("", "jwt");
@@ -21,7 +22,7 @@ const AssignmentView = () => {
       setAssignmentData(data);
     }
     fetchData();
-  }, []);
+  }, [assignmentId, jwt]); // Added dependencies for useEffect
 
   const save = async () => {
     const data = await ajax(
@@ -35,30 +36,49 @@ const AssignmentView = () => {
 
   return (
     <>
-      <div>{assignmentId}</div>
       {assignmentData ? (
-        <>
-          <h2>{assignmentData.status}</h2>
-          <h3>
-            Github URL:{" "}
-            <input
-              type="url"
-              id="githubUrl"
-              onChange={(e) => updateAssignment("githubUrl", e.target.value)}
-              value={assignmentData.githubUrl ? assignmentData.githubUrl : ""}
-            />
-          </h3>
-          <h3>
-            Branch:{" "}
-            <input
-              type="text"
-              id="branch"
-              onChange={(e) => updateAssignment("branch", e.target.value)}
-              value={assignmentData.branch ? assignmentData.branch : ""}
-            />
-          </h3>
-          <button onClick={save}>Submit Assignment</button>
-        </>
+        <Container className="m-3">
+          <h2>
+            Assignment ID: {assignmentData.id}{" "}
+            <h5 style={{display: "inline"}}>
+              <Badge className="mb-2" pill bg="dark">
+              {assignmentData.status}
+            </Badge>
+              </h5>
+          </h2>
+
+          <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
+            <Form.Label column sm="2">
+              GitHub URL:
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control
+                type="url"
+                id="githubUrl"
+                placeholder="https://github.com/username/repo-name"
+                onChange={(e) => updateAssignment("githubUrl", e.target.value)}
+                value={assignmentData.githubUrl ? assignmentData.githubUrl : ""}
+              />
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
+            <Form.Label column sm="2">
+              Branch:
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control
+                type="text"
+                id="branch"
+                placeholder="branch-name"
+                onChange={(e) => updateAssignment("branch", e.target.value)}
+                value={assignmentData.branch ? assignmentData.branch : ""}
+              />
+            </Col>
+          </Form.Group>
+
+          <Button onClick={save}>Submit Assignment</Button>
+        </Container>
       ) : null}
     </>
   );
