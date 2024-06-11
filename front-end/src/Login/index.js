@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocalStorage } from "../util/useLocalStorage";
-import { Navigate } from "react-router-dom";
+import { Row, Col, Container, Button, Form } from "react-bootstrap";
 
 const Login = () => {
   const [jwt, setJwt] = useLocalStorage("", "jwt");
@@ -44,29 +44,41 @@ const Login = () => {
 
   return (
     <>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
-          type="email"
-          id="username"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-      </div>
-      <div>
-        <button id="submit" type="submit" onClick={sendLoginRequest}>
-          Login
-        </button>
-      </div>
+      <Container className="mt-5">
+        <Form.Group className="mb-3" controlId="formGroupEmail">
+          <Form.Label htmlFor="username" className="fs-3">
+            Username
+          </Form.Label>
+          <Form.Control
+            type="email"
+            id="username"
+            value={username}
+            onChange={handleUsernameChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formGroupEmail">
+          <Form.Label htmlFor="password" className="fs-3">
+            Password
+          </Form.Label>
+          <Form.Control
+            type="password"
+            id="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+        </Form.Group>
+
+        <Row>
+          <Col className="d-flex flex-column">
+            <div>
+              <Button id="submit" type="submit" onClick={sendLoginRequest}>
+                Login
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };
