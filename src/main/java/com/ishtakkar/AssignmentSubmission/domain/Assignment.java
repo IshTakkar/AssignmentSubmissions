@@ -13,6 +13,16 @@ public class Assignment {
     private String branch;
     private String codeReviewVideoUrl;
 
+    private Long number;
+
+    public Long getNumber() {
+        return number;
+    }
+
+    public void setNumber(Long number) {
+        this.number = number;
+    }
+
     @ManyToOne(optional = false)
     private User user;
 
