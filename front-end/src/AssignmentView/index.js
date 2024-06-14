@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useLocalStorage } from "../util/useLocalStorage";
 import { ajax } from "../Services/fetchService";
-import { Form, Col, Row, Button, Container, Badge } from "react-bootstrap";
+import {
+  Form,
+  Col,
+  Row,
+  Button,
+  Container,
+  Badge,
+  Dropdown,
+} from "react-bootstrap";
 
 const AssignmentView = () => {
   const [jwt, setJwt] = useLocalStorage("", "jwt");
   const [assignmentData, setAssignmentData] = useState(null);
+  const [assignmentEnum, setAssignmentEnum] = useState([]);
 
   const assignmentId = window.location.href.split("/assignments/")[1];
 
@@ -19,10 +28,14 @@ const AssignmentView = () => {
   useEffect(() => {
     async function fetchData() {
       const data = await ajax(`/api/assignments/${assignmentId}`, "GET", jwt);
-      setAssignmentData(data);
+
+      setAssignmentData(data.assignment);
+      setAssignmentEnum(data.assignmentEnum);
     }
     fetchData();
-  }, [assignmentId, jwt]); // Added dependencies for useEffect
+  }, []);
+
+  console.log(assignmentEnum);
 
   const save = async () => {
     const data = await ajax(
@@ -40,12 +53,39 @@ const AssignmentView = () => {
         <Container className="m-3">
           <h2>
             Assignment ID: {assignmentData.id}{" "}
-            <h5 style={{display: "inline"}}>
+            <h5 style={{ display: "inline" }}>
               <Badge className="mb-2" pill bg="dark">
-              {assignmentData.status}
-            </Badge>
-              </h5>
+                {assignmentData.status}
+              </Badge>
+            </h5>
           </h2>
+
+          <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
+            <Form.Label column sm="2">
+              Assignment Number:
+            </Form.Label>
+            <Col sm="10">
+              {/* <Dropdown>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  Assignment {assignmentData.id}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  {assignmentEnum.map((name, idx) => {
+                    <Dropdown.Item>
+                      {name.assignmentName}
+                    </Dropdown.Item>;
+                  })}
+                </Dropdown.Menu>
+               </Dropdown> */}
+
+              <div>
+                {assignmentEnum.map((assignmentE, idx) => {
+                  <p key={idx}>{assignmentE.assignmentName}</p>;
+                })}
+              </div>
+            </Col>
+          </Form.Group>
 
           <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
             <Form.Label column sm="2">
