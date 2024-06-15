@@ -12,7 +12,6 @@ public class Assignment {
     private String githubUrl;
     private String branch;
     private String codeReviewVideoUrl;
-
     private Long number;
 
     public Long getNumber() {

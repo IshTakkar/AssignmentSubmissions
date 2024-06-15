@@ -3,6 +3,7 @@ package com.ishtakkar.AssignmentSubmission.service;
 import com.ishtakkar.AssignmentSubmission.domain.Assignment;
 import com.ishtakkar.AssignmentSubmission.domain.User;
 import com.ishtakkar.AssignmentSubmission.enums.AssignmentStatus;
+import com.ishtakkar.AssignmentSubmission.enums.AuthorityEnum;
 import com.ishtakkar.AssignmentSubmission.repository.AssignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,17 @@ public class AssignmentService {
     }
 
     public Set<Assignment> findByUser(User user) {
+        // load assignments for a user of role code reviewer
+        boolean hasCodeReviewerRole = user.getAuthorities().stream()
+                .filter(auth -> AuthorityEnum.ROLE_CODE_REVIEWER.name().equals(auth.getAuthority()))
+                .count() > 0;
+
+        if(hasCodeReviewerRole) {
+            String status = AssignmentStatus.SUBMITTED.getStatus();
+            return assignmentRepo.findByCodeReviewer(status);
+        }
+
+        // load assignments for a user of role student
         return assignmentRepo.findByUser(user);
     }
 

@@ -31,9 +31,21 @@ const Dashboard = () => {
 
   return (
     <div className="m-5">
-      <Button className="m-2" onClick={createAssignment}>
-        Submit New Assignment
-      </Button>
+      <div className="d-flex justify-content-between">
+        <Button className="m-2" onClick={createAssignment}>
+          Submit New Assignment
+        </Button>
+        <Button
+          className="m-2"
+          variant="warning"
+          onClick={() => {
+            setJwt(null);
+            window.location.href = "/login";
+          }}
+        >
+          Logout
+        </Button>
+      </div>
 
       <Container>
         <Row>
@@ -46,7 +58,9 @@ const Dashboard = () => {
                     key={assignment.id}
                   >
                     <Card.Body className="d-flex flex-column justify-content-around">
-                      <Card.Title>Assignment ID: {assignment.number}</Card.Title>
+                      <Card.Title>
+                        Assignment ID: {assignment.number}
+                      </Card.Title>
                       <Badge
                         className="mb-2"
                         style={{ maxWidth: "fit-content" }}
