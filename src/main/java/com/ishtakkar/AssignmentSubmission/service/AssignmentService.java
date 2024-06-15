@@ -2,9 +2,9 @@ package com.ishtakkar.AssignmentSubmission.service;
 
 import com.ishtakkar.AssignmentSubmission.domain.Assignment;
 import com.ishtakkar.AssignmentSubmission.domain.User;
+import com.ishtakkar.AssignmentSubmission.enums.AssignmentStatus;
 import com.ishtakkar.AssignmentSubmission.repository.AssignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.ast.Assign;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,7 +18,7 @@ public class AssignmentService {
 
     public Assignment save(User user) {
         Assignment assignment = new Assignment();
-        assignment.setStatus("Needs to be submitted");
+        assignment.setStatus(AssignmentStatus.PENDING_SUBMISSION.getStatus());
         assignment.setUser(user);
 
         return assignmentRepo.save(assignment);
