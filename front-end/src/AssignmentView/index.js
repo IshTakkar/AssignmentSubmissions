@@ -51,7 +51,7 @@ const AssignmentView = () => {
       {assignmentData ? (
         <Container className="m-3">
           <h2>
-            Assignment ID: {assignmentData.id}{" "}
+            Assignment ID: {assignmentData.number}{" "}
             <h5 style={{ display: "inline" }}>
               <Badge className="mb-2" pill bg="dark">
                 {assignmentData.status}

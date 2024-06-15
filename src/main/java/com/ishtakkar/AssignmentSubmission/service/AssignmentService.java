@@ -19,10 +19,24 @@ public class AssignmentService {
     public Assignment save(User user) {
         Assignment assignment = new Assignment();
         assignment.setStatus(AssignmentStatus.PENDING_SUBMISSION.getStatus());
+        assignment.setNumber(findNextAssignmentToSubmit(user));
         assignment.setUser(user);
 
         return assignmentRepo.save(assignment);
     }
+
+    private Long findNextAssignmentToSubmit(User user) {
+        Set<Assignment> assignmentsByUser = assignmentRepo.findByUser(user);
+        if(assignmentsByUser == null)
+            return 1L;
+        Optional<Long> nextAssignmentNumOpt = assignmentsByUser.stream()
+                .sorted((a1, a2) -> a2.getNumber().compareTo(a1.getNumber()))
+                .map(a -> a.getNumber() + 1)
+                .findFirst();
+
+        return nextAssignmentNumOpt.orElse(1L);
+    }
+
 
     public Assignment save(Assignment assignment) {
         return assignmentRepo.save(assignment);

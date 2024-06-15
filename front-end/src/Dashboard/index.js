@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocalStorage } from "../util/useLocalStorage";
 import { Link } from "react-router-dom";
 import { ajax } from "../Services/fetchService";
-import { Card, Row, Col, Container, Button } from "react-bootstrap";
+import { Card, Row, Col, Container, Button, Badge } from "react-bootstrap";
 
 const Dashboard = () => {
   const [jwt, setJwt] = useLocalStorage("", "jwt");
@@ -46,10 +46,15 @@ const Dashboard = () => {
                     key={assignment.id}
                   >
                     <Card.Body className="d-flex flex-column justify-content-around">
-                      <Card.Title>Assignment ID: {assignment.id}</Card.Title>
-                      <Card.Subtitle className="mb-2 text-muted">
+                      <Card.Title>Assignment ID: {assignment.number}</Card.Title>
+                      <Badge
+                        className="mb-2"
+                        style={{ maxWidth: "fit-content" }}
+                        pill
+                        bg="dark"
+                      >
                         {assignment.status}
-                      </Card.Subtitle>
+                      </Badge>
                       <Card.Text>
                         <p>
                           <b>GitHub URL: </b>
