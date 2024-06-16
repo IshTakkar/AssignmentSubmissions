@@ -13,6 +13,18 @@ public class Assignment {
     private String branch;
     private String codeReviewVideoUrl;
     private Long number;
+    @ManyToOne(optional = false)
+    private User user;
+    @ManyToOne
+    private User codeReviewer;
+
+    public User getCodeReviewer() {
+        return codeReviewer;
+    }
+
+    public void setCodeReviewer(User codeReviewer) {
+        this.codeReviewer = codeReviewer;
+    }
 
     public Long getNumber() {
         return number;
@@ -21,9 +33,6 @@ public class Assignment {
     public void setNumber(Long number) {
         this.number = number;
     }
-
-    @ManyToOne(optional = false)
-    private User user;
 
     public Long getId() {
         return id;

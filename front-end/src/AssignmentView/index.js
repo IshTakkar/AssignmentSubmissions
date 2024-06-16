@@ -27,7 +27,7 @@ const AssignmentView = () => {
       setAssignmentData(data.assignment);
       setAssignmentEnum(data.assignmentEnum);
       setAssignmentStatuses(data.assignmentStatuses);
-      console.log(data.assignmentStatuses);
+      console.log(data.assignment);
     }
     fetchData();
   }, []);

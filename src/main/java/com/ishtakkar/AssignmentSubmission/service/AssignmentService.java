@@ -39,17 +39,23 @@ public class AssignmentService {
     }
 
 
-    public Assignment save(Assignment assignment) {
+    public Assignment save(Assignment assignment, User user) {
+        boolean userHasCodeReviewerRole = user.getAuthorities().stream()
+                .filter(auth -> AuthorityEnum.ROLE_CODE_REVIEWER.name().equals(auth.getAuthority()))
+                .count() > 0;
+        if(userHasCodeReviewerRole)
+            assignment.setCodeReviewer(user);
+
         return assignmentRepo.save(assignment);
     }
 
     public Set<Assignment> findByUser(User user) {
         // load assignments for a user of role code reviewer
-        boolean hasCodeReviewerRole = user.getAuthorities().stream()
+        boolean userHasCodeReviewerRole = user.getAuthorities().stream()
                 .filter(auth -> AuthorityEnum.ROLE_CODE_REVIEWER.name().equals(auth.getAuthority()))
                 .count() > 0;
 
-        if(hasCodeReviewerRole) {
+        if(userHasCodeReviewerRole) {
             String status = AssignmentStatus.SUBMITTED.getStatus();
             return assignmentRepo.findByCodeReviewer(status);
         }

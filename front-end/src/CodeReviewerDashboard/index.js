@@ -9,6 +9,22 @@ const CodeReviewerDashboard = () => {
   const [jwt, setJwt] = useLocalStorage("", "jwt");
   const [assignments, setAssignments] = useState(null);
 
+  const claimAssignment = async (assignment) => {
+    assignment.status = "In Review";
+    const response = await ajax(
+      `/api/assignments/${assignment.id}`,
+      "PUT",
+      jwt,
+      assignment
+    );
+    // TODO: update assignment update logic
+    
+    // const assignmentsCopy = { ...assignments };
+    // const idx = assignmentsCopy.find(a => a.id === assignment.id)
+    // assignmentsCopy[idx] = response
+    // setAssignments(assignmentsCopy)
+  };
+
   useEffect(() => {
     async function fetchData() {
       const data = await ajax("/api/assignments", "GET", jwt);
@@ -16,19 +32,6 @@ const CodeReviewerDashboard = () => {
     }
     fetchData();
   }, []);
-
-  const createAssignment = async () => {
-    const response = await fetch("/api/assignments", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwt}`,
-      },
-      method: "POST",
-    });
-
-    const data = await response.json();
-    window.location.href = `/assignments/${data.id}`;
-  };
 
   return (
     <div className="m-5">
@@ -93,12 +96,13 @@ const CodeReviewerDashboard = () => {
                             {assignment.branch}
                           </p>
                         </Card.Text>
-                        <Link
-                          to={`/assignments/${assignment.id}`}
-                          className="link-primary link-underline-opacity-0"
+                        <Button
+                          onClick={() => {
+                            claimAssignment(assignment);
+                          }}
                         >
-                          Edit
-                        </Link>
+                          Claim
+                        </Button>
                       </Card.Body>
                     </Card>
                   </Col>
